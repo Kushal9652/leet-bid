@@ -7,21 +7,15 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+connectDB(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection error", err));
 
 
 app.use(express.json());
 
-app.use('/api/users', userRoutes);
-
-app.get('/', (req, res) => {
-    res.send('Welcome to Leet Bid Backend!');
-});
-app.get('/admin', (req, res) => {
-    res.send('Welcome admin');
-});
-
-connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
-});
+// // Router Registrations
+// app.use("/api/users", userRouter);

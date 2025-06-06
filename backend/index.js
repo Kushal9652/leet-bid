@@ -7,15 +7,21 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-
-connectDB(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB connection error", err));
-
-
+// Middleware to parse JSON bodies
 app.use(express.json());
 
-// // Router Registrations
-// app.use("/api/users", userRouter);
+// Register user routes
+app.use('/api/users', userRoutes);
+
+app.get('/', (req, res) => {
+  res.send('Welcome to the backend server!');
+});
+
+connectDB(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("MongoDB connected");
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch((err) => console.error("MongoDB connection error", err));
+
